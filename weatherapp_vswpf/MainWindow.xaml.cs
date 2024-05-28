@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,8 +8,10 @@ namespace WeatherApp
 {
     public partial class MainWindow : Window
     {
-        private const string API_KEY = "7bb2dc954f6d15a68e1f7acce994f9ec";
-        private const string BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
+        private const string OPENWEATHERMAP_API_KEY = "7bb2dc954f6d15a68e1f7acce994f9ec";
+        private const string OPENWEATHERMAP_BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
+        private const string WEATHERBIT_API_KEY = "3cdd5fe5451b4bdd9b8561a7d5e16015";
+        private const string WEATHERBIT_BASE_URL = "https://api.weatherbit.io/v2.0/current";
 
         public MainWindow()
         {
@@ -27,9 +29,9 @@ namespace WeatherApp
 
             try
             {
-                string weatherData = await GetWeatherDataAsync(city);
-                var weatherInfo = JsonConvert.DeserializeObject<WeatherInfo>(weatherData);
-                DisplayWeather(weatherInfo);
+                string weatherData = await GetWeatherData_open(city);
+                var weatherInfo = JsonConvert.DeserializeObject<OpenWeatherMapWeatherInfo>(weatherData);
+                DisplayWeather_open(weatherInfo);
             }
             catch (Exception ex)
             {
@@ -48,9 +50,9 @@ namespace WeatherApp
 
             try
             {
-                string weatherData = await GetWeatherDataAsync(city);
-                var weatherInfo = JsonConvert.DeserializeObject<WeatherInfo>(weatherData);
-                DisplayWeather2(weatherInfo);
+                string weatherData = await GetWeatherData_bit(city);
+                var weatherInfo = JsonConvert.DeserializeObject<WeatherbitWeatherInfo>(weatherData);
+                DisplayWeather_bit(weatherInfo);
             }
             catch (Exception ex)
             {
@@ -58,18 +60,29 @@ namespace WeatherApp
             }
         }
 
-        private async Task<string> GetWeatherDataAsync(string city)
+        private async Task<string> GetWeatherData_open(string city)
         {
             using (HttpClient client = new HttpClient())
             {
-                string url = $"{BASE_URL}?q={city}&appid={API_KEY}&units=metric";
+                string url = $"{OPENWEATHERMAP_BASE_URL}?q={city}&appid={OPENWEATHERMAP_API_KEY}&units=metric";
                 HttpResponseMessage response = await client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsStringAsync();
             }
         }
 
-        private void DisplayWeather(WeatherInfo weatherInfo)
+        private async Task<string> GetWeatherData_bit(string city)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string url = $"{WEATHERBIT_BASE_URL}?city={city}&key={WEATHERBIT_API_KEY}";
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        private void DisplayWeather_open(OpenWeatherMapWeatherInfo weatherInfo)
         {
             if (weatherInfo != null)
             {
@@ -83,14 +96,16 @@ namespace WeatherApp
                 WeatherResultTextBlock.Text = "No weather information found.";
             }
         }
-        private void DisplayWeather2(WeatherInfo weatherInfo)
+
+        private void DisplayWeather_bit(WeatherbitWeatherInfo weatherInfo)
         {
-            if (weatherInfo != null)
+            if (weatherInfo != null && weatherInfo.data.Length > 0)
             {
-                WeatherResultTextBlock2.Text = $"Weather in {weatherInfo.Name}:\n" +
-                                              $"Temperature: {weatherInfo.Main.Temp}°C\n" +
-                                              $"Humidity: {weatherInfo.Main.Humidity}%\n" +
-                                              $"Condition: {weatherInfo.Weather[0].Description}";
+                var currentWeather = weatherInfo.data[0];
+                WeatherResultTextBlock2.Text = $"Weather in {currentWeather.city_name}:\n" +
+                                               $"Temperature: {currentWeather.temp}°C\n" +
+                                               $"Humidity: {currentWeather.rh}%\n" +
+                                               $"Condition: {currentWeather.weather.description}";
             }
             else
             {
@@ -99,7 +114,7 @@ namespace WeatherApp
         }
     }
 
-    public class WeatherInfo
+    public class OpenWeatherMapWeatherInfo
     {
         public string Name { get; set; }
         public Main Main { get; set; }
@@ -115,5 +130,23 @@ namespace WeatherApp
     public class Weather
     {
         public string Description { get; set; }
+    }
+
+    public class WeatherbitWeatherInfo
+    {
+        public Data[] data { get; set; }
+    }
+
+    public class Data
+    {
+        public string city_name { get; set; }
+        public float temp { get; set; }
+        public int rh { get; set; }
+        public WeatherDescription weather { get; set; }
+    }
+
+    public class WeatherDescription
+    {
+        public string description { get; set; }
     }
 }
