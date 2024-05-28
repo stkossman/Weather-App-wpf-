@@ -1,4 +1,3 @@
-<p class="has-line-data" data-line-start="0" data-line-end="1"><img src="https://img.shields.io/github/stars/pandao/editor.md.svg" alt=""> <img src="https://img.shields.io/github/forks/pandao/editor.md.svg" alt=""> ![]</p>
 <h3 class="code-line" data-line-start=1 data-line-end=2 ><a id="General_1"></a>General</h3>
 <p class="has-line-data" data-line-start="2" data-line-end="3">This is a basic <strong>WPF application</strong> written on C# which shows weather in city you write. Weather is shown in 2 different APIs: <strong>OpenWeather and WeatherBit</strong>.  Also used <strong>NewtonJSON</strong>.</p>
 <hr>
