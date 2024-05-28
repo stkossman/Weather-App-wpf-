@@ -15,7 +15,7 @@
 </ul>
 <hr>
 <h3 class="code-line" data-line-start=16 data-line-end=17 ><a id="Update_16"></a>Update</h3>
-<p class="has-line-data" data-line-start="17" data-line-end="18">I will work on this application till it satisfies myself. Also because it is my final university project.:tw-1f44c:</p>
+<p class="has-line-data" data-line-start="17" data-line-end="18">I will work on this application till it satisfies myself. Also because it is my final university project.</p>
 <hr>
 <h3 class="code-line" data-line-start=20 data-line-end=21 ><a id="Author_20"></a>Author</h3>
 <p class="has-line-data" data-line-start="21" data-line-end="22"><strong>made by <a href="https://github.com/stkossman" title="stkossman">stkossman</a></strong></p>
