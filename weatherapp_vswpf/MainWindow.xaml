@@ -1,21 +1,21 @@
 <Window x:Class="WeatherApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Weather App" Height="450" Width="600">
+        Title="Weather App" Height="600" Width="995">
     <Grid Margin="0,0,0,-6">
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="13,77,0,0">
-            <TextBlock FontSize="16" Margin="10"><Run Text="Enter "/><Run Language="pl-pl" Text="c"/><Run Text="ity:"/></TextBlock>
-            <TextBox Name="CityTextBox" Width="200" Margin="10"/>
-            <Button Content="Get Weather" Click="GetWeatherButton_Click" Width="200" Margin="10"/>
-            <TextBlock Name="WeatherResultTextBlock" FontSize="16" TextWrapping="Wrap" Margin="10"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0,0,195" Width="316">
+            <TextBox Name="CityTextBox" Width="313" FontFamily="Microsoft YaHei" Opacity="1" Margin="0 10 0 10" Height="21"/>
+            <Button Content="Get Weather" Click="GetWeatherButton_Click" Margin="0 10 0 10" Width="307" Style="{DynamicResource RoundButton}"/>
+            <Image Name="WeatherIcon" Width="200" Height="200" Margin="0 10 0 10"/>
+            <Label x:Name="CurrentDateTimeLabel" HorizontalAlignment="Center" Content="Current date and time:" Margin="0 10 0 10" Style="{StaticResource textButton}"/>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="347,78,0,0">
-            <TextBlock FontSize="16" Margin="10"><Run Text="Enter "/><Run Language="pl-pl" Text="c"/><Run Text="ity:"/></TextBlock>
-            <TextBox Name="CityTextBox1" Width="200" Margin="10"/>
-            <Button Content="Get Weather" Click="GetWeatherButton2_Click" Width="200" Margin="10"/>
-            <TextBlock Name="WeatherResultTextBlock2" FontSize="16" TextWrapping="Wrap" Margin="10"/>
-        </StackPanel>
-        <TextBlock HorizontalAlignment="Left" Margin="24,59,0,0" TextWrapping="Wrap" Text="OpenWeather API" VerticalAlignment="Top" Height="22" Width="123" FontSize="16"/>
-        <TextBlock HorizontalAlignment="Left" Margin="358,59,0,0" TextWrapping="Wrap" Text="WeatherBit API" VerticalAlignment="Top" Height="17" Width="123" FontSize="16"/>
+
+        <TextBlock Name="WeatherResultTextBlock" TextWrapping="Wrap" Margin="498,53,10,413" Style="{StaticResource TextBlockStyle}">
+                <Run Text="OpenWeather: "/>
+        </TextBlock>
+        <TextBlock Name="WeatherResultTextBlock2" TextWrapping="Wrap" Margin="498,193,10,256" Style="{StaticResource TextBlockStyle}">
+                <Run Text="WeatherBit: "/>
+        </TextBlock>
+        <Label Content="Today's Weather:" HorizontalAlignment="Left" Margin="498,10,0,0" VerticalAlignment="Top" Width="472" Style="{StaticResource textButton}"/>
     </Grid>
 </Window>
