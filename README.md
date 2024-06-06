@@ -4,7 +4,7 @@
 <h3 class="code-line" data-line-start=5 data-line-end=6 ><a id="Features_5"></a>Features</h3>
 <ul>
 <li class="has-line-data" data-line-start="7" data-line-end="8"><strong>Weather</strong>: shows weather through two different APIs;</li>
-<li class="has-line-data" data-line-start="8" data-line-end="10"><strong>Warning</strong>: do not show weathr in cities, which names were changed recently. Need to write in old names of cities. (checked on my native city since name of it was changed in 2023);</li>
+<li class="has-line-data" data-line-start="8" data-line-end="10"><strong>!Warning!</strong>: do not show weather in cities, which names were changed recently. Need to write in old names of cities. (checked on my native city since name of it was changed in 2023);</li>
 </ul>
 <hr>
 <h3 class="code-line" data-line-start=11 data-line-end=12 ><a id="Requirements_11"></a>Requirements</h3>
