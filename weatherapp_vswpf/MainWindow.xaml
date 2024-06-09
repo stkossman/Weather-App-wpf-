@@ -16,6 +16,9 @@
         <TextBlock Name="WeatherResultTextBlock2" TextWrapping="Wrap" Margin="498,193,10,256" Style="{StaticResource TextBlockStyle}">
                 <Run Text="WeatherBit: "/>
         </TextBlock>
+        <TextBlock Name="ForecastTextBlock" TextWrapping="Wrap" Margin="498,333,10,10" Style="{StaticResource TextBlockStyle}">
+                <Run Text="Forecast: "/>
+        </TextBlock>
         <Label Content="Today's Weather:" HorizontalAlignment="Left" Margin="498,10,0,0" VerticalAlignment="Top" Width="472" Style="{StaticResource textButton}"/>
     </Grid>
 </Window>
