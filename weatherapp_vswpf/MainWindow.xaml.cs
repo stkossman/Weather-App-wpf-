@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -13,6 +14,7 @@ namespace WeatherApp
     {
         private const string OPENWEATHERMAP_API_KEY = "7bb2dc954f6d15a68e1f7acce994f9ec";
         private const string OPENWEATHERMAP_BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
+        private const string OPENWEATHERMAP_FORECAST_URL = "http://api.openweathermap.org/data/2.5/forecast";
         private const string WEATHERBIT_API_KEY = "3cdd5fe5451b4bdd9b8561a7d5e16015";
         private const string WEATHERBIT_BASE_URL = "https://api.weatherbit.io/v2.0/current";
 
@@ -51,10 +53,49 @@ namespace WeatherApp
                 string weatherDataBit = await GetWeatherData_bit(city);
                 var weatherInfoBit = JsonConvert.DeserializeObject<WeatherbitWeatherInfo>(weatherDataBit);
                 DisplayWeather_bit(weatherInfoBit);
+
+                string forecastData = await GetForecast(city);
+                var forecastInfo = JsonConvert.DeserializeObject<OpenWeatherMapForecastInfo>(forecastData);
+                DisplayForecast(forecastInfo);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async Task<string> GetForecast(string city)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string url = $"{OPENWEATHERMAP_FORECAST_URL}?q={city}&appid={OPENWEATHERMAP_API_KEY}&units=metric";
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        private void DisplayForecast(OpenWeatherMapForecastInfo forecastInfo)
+        {
+            if (forecastInfo != null && forecastInfo.list.Length > 0)
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine("5-Day Forecast:");
+                var groupedByDate = forecastInfo.list.GroupBy(x => x.dt_txt.Split(' ')[0])
+                                                     .Take(5);
+
+                foreach (var group in groupedByDate)
+                {
+                    var date = group.Key;
+                    var dayData = group.First();
+                    sb.AppendLine($"{date}: {dayData.main.Temp}°C, {dayData.weather[0].Description}");
+                }
+
+                ForecastTextBlock.Text = sb.ToString();
+            }
+            else
+            {
+                ForecastTextBlock.Text = "No 5-day forecast information found.";
             }
         }
 
@@ -197,6 +238,17 @@ namespace WeatherApp
         public class WeatherDescription
         {
             public string description { get; set; }
+        }
+
+        public class OpenWeatherMapForecastInfo
+        {
+            public List[] list { get; set; }
+        }
+        public class List
+        {
+            public Main main { get; set; }
+            public Weather[] weather { get; set; }
+            public string dt_txt { get; set; }
         }
     }
 }
